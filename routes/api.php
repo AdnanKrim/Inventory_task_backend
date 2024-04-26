@@ -32,7 +32,9 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     //Inventory Api
     Route::post('add-inventory',[InventoryController::class,'inventoryAdd'])->name('add-inventory');
     Route::get('inventory-detail/{id}',[InventoryController::class,'inventoryDetail'])->name('inventory-detail');
+    Route::delete('inventory-delete/{id}',[InventoryController::class,'inventoryDelete'])->name('inventory-delete');
     Route::get('inventory-list',[InventoryController::class,'inventoryList'])->name('inventory-list');
+    Route::post('inventory-update',[InventoryController::class,'inventoryUpdate'])->name('inventory-update');
     });
 
 //login and reg Api.....

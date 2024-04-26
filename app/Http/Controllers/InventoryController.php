@@ -12,7 +12,7 @@ class InventoryController extends Controller
     //Inventory List....
 
     public function inventoryList(){
-        $data = Inventory::all();
+        $data = Inventory::where('userID',auth()->user()->id)->get();
         return response([
             'inventory'=> $data
         ]);
@@ -42,7 +42,7 @@ class InventoryController extends Controller
     // inventory detail.....
     public function inventoryDetail($id){
         // $itemDet = Item::all();
-        $data = Inventory::where('id',$id)->where('userID',auth()->user()->id)->first();
+        $data = Inventory::where('id',$id)->first();
         $itemList = json_decode($data['items']);
         $itemnum =[];
         foreach($itemList as $itmlst){
@@ -69,4 +69,49 @@ class InventoryController extends Controller
             // 'item'=> $itemlist
         ]);
     }
+
+    //Inventory Delete
+    public function inventoryDelete($id)
+    {
+        $data = Inventory::find($id);
+        if(!$data){
+            return response([
+                "message"=>'Inventory doesnt exist',
+                "status"=> 202
+            ]);
+        }else{
+            $data->delete();
+            return response([
+                "message"=>'Inventory deleted successfuly',
+                "status"=> 201
+            ]);
+        }
+    }
+    //Inventory Update
+
+    public function inventoryUpdate(Request $req){
+        $data = Inventory::find($req->id);
+        $data->userId = auth()->user()->id;
+        $data->invName = $req->invName;
+        $data->description = $req->description;
+        $data->items = json_encode($req->items);
+        $result = $data->save();
+        if ($result) {
+            return response([
+                'message' => 'Inventory is updated successfully',
+                'status' => '201'
+            ]);
+        } else {
+            return response([
+                'message' => 'failed, Something Went Wrong',
+                'status' => '202'
+            ]);
+        }
+
+    }
 }
+    
+    
+
+    
+    
