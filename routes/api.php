@@ -22,13 +22,17 @@ use App\Http\Controllers\InventoryController;
 // });
 
 Route::group(['middleware' => 'auth:sanctum'], function(){
+    //logout
+    Route::post("user-logout",[UserController::class,'userLogout'])->name('user-logout');
+
     //item Api
     Route::get('item-list',[ItemController::class,'itemList'])->name('item-list');
     Route::post('add-item',[ItemController::class,'itemAdd'])->name('add-item');
 
     //Inventory Api
     Route::post('add-inventory',[InventoryController::class,'inventoryAdd'])->name('add-inventory');
-    Route::get('inventory-detail',[InventoryController::class,'inventoryDetail'])->name('inventory-detail');
+    Route::get('inventory-detail/{id}',[InventoryController::class,'inventoryDetail'])->name('inventory-detail');
+    Route::get('inventory-list',[InventoryController::class,'inventoryList'])->name('inventory-list');
     });
 
 //login and reg Api.....
